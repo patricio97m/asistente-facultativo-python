@@ -276,6 +276,7 @@ function renderPredictionResults(data) {
     <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span> Estudio ML: ${resumen.horas_estudio}h</div>
     <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> Trabajo: ${resumen.horas_trabajo}h</div>
     <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span> Sueño: ${resumen.horas_sueno}h</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#334155; border: 1px solid #64748b"></span> Tiempo Libre: ${resumen.horas_libres_disponibles}h</div>
   `;
 
   // Subject Predictions List
