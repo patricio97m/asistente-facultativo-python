@@ -32,8 +32,15 @@ const planGrid = document.getElementById('planGrid');
 const btnPresetBalanced = document.getElementById('btnPresetBalanced');
 const btnPresetOverload = document.getElementById('btnPresetOverload');
 
+// Tab Navigation Elements
+const tabDashboard = document.getElementById('tabDashboard');
+const tabDocs = document.getElementById('tabDocs');
+const viewDashboard = document.getElementById('viewDashboard');
+const viewDocs = document.getElementById('viewDocs');
+
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
+  setupTabs();
   checkApiHealth();
   loadProfile();
   loadSubjects();
@@ -45,6 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
   btnPresetBalanced.addEventListener('click', applyBalancedPreset);
   btnPresetOverload.addEventListener('click', applyOverloadPreset);
 });
+
+// Setup Tab Navigation
+function setupTabs() {
+  const tabs = [
+    { btn: tabDashboard, view: viewDashboard },
+    { btn: tabDocs, view: viewDocs }
+  ];
+
+  tabs.forEach(t => {
+    t.btn.addEventListener('click', () => {
+      tabs.forEach(item => {
+        item.btn.classList.remove('active');
+        item.view.classList.add('hidden');
+      });
+      t.btn.classList.add('active');
+      t.view.classList.remove('hidden');
+    });
+  });
+}
 
 // Check if Backend API on localhost:8080 is reachable
 async function checkApiHealth() {

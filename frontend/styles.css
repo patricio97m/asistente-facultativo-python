@@ -41,21 +41,22 @@ body {
   padding: 0 1.5rem;
 }
 
-/* Navbar */
+/* Navbar & Navigation Tabs */
 .navbar {
-  background: rgba(30, 41, 59, 0.8);
+  background: rgba(30, 41, 59, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 1rem 0;
+  padding: 0.85rem 0;
 }
 
 .navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1.5rem;
 }
 
 .logo {
@@ -81,6 +82,40 @@ body {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Nav Tabs */
+.nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 0.3rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-tab.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .api-status {
@@ -115,6 +150,14 @@ body {
   padding-top: 2rem;
   padding-bottom: 3rem;
   flex: 1;
+}
+
+.tab-view {
+  display: block;
+}
+
+.tab-view.hidden {
+  display: none !important;
 }
 
 /* Guide Card */
@@ -199,6 +242,10 @@ body {
 @media (max-width: 992px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
+  }
+  .navbar-content {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -625,6 +672,246 @@ input[type="number"]:focus, input[type="text"]:focus {
   padding: 0.4rem 0.75rem;
   font-size: 0.75rem;
   width: auto;
+}
+
+/* ==================== DOCUMENTATION VIEW STYLES ==================== */
+.docs-hero {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(139, 92, 246, 0.2));
+  border-left: 4px solid var(--accent);
+  margin-bottom: 2rem;
+}
+
+.docs-hero-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.docs-hero-icon {
+  font-size: 2.5rem;
+}
+
+.docs-hero h2 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.docs-hero p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.docs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.doc-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+}
+
+.doc-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.doc-badge-num {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--accent);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+}
+
+.doc-header h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--text-main);
+}
+
+.doc-body p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.65;
+}
+
+.styled-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.styled-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.styled-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* Models Duo */
+.models-duo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.model-item {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  border-radius: 10px;
+}
+
+.model-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.tag-clf { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+.tag-reg { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+
+.model-item h4 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.model-item p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+/* Table Responsive */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.docs-table th {
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--text-main);
+  font-family: var(--font-heading);
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.docs-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.docs-table tr:hover td {
+  background: rgba(51, 65, 85, 0.3);
+}
+
+.docs-table code {
+  background: rgba(15, 23, 42, 0.8);
+  color: #60a5fa;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+/* Formula Box */
+.formula-box {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.formula-box code {
+  color: #60a5fa;
+  font-size: 0.95rem;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+/* Risk Cards Grid */
+.risk-levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.risk-card {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.risk-badge {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.risk-low .risk-badge { color: var(--success); }
+.risk-medium .risk-badge { color: var(--warning); }
+.risk-high .risk-badge { color: var(--danger); }
+
+.risk-card p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+.styled-steps-list {
+  margin-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.styled-steps-list li {
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 /* Helpers */
