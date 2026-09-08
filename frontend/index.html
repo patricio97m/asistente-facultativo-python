@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asistente Facultativo - Dashboard ML</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container navbar-content">
+      <div class="logo">
+        <span class="logo-icon">🎓</span>
+        <div>
+          <span class="logo-title">Asistente Facultativo</span>
+          <span class="logo-subtitle">ML Engine v1.0</span>
+        </div>
+      </div>
+      <div class="api-status" id="apiStatus">
+        <span class="status-dot offline"></span>
+        <span class="status-text">Comprobando API (localhost:8080)...</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+
+    <!-- Guía Explicativa / Instructions Banner -->
+    <section class="card guide-card">
+      <div class="guide-header">
+        <span class="guide-icon">💡</span>
+        <h2>¿Cómo probar las funcionalidades del sistema?</h2>
+      </div>
+      <p class="guide-intro">
+        Esta plataforma utiliza LightGBM para estimar tus probabilidades de promoción y calcular las horas diarias
+        de estudio sugeridas según tu perfil y carga horaria.
+      </p>
+      <div class="steps-grid">
+        <div class="step-box">
+          <span class="step-num">1</span>
+          <h4>Configura tu Perfil</h4>
+          <p>Indica tus horas semanales de trabajo, sueño deseado y promedio académico.</p>
+        </div>
+        <div class="step-box">
+          <span class="step-num">2</span>
+          <h4>Selecciona Materias</h4>
+          <p>Elige de la lista oficial de materias cargadas desde la API.</p>
+        </div>
+        <div class="step-box">
+          <span class="step-num">3</span>
+          <h4>Simulación ML</h4>
+          <p>Obtené el diagnóstico de riesgo, la probabilidad de promoción y la alerta de sobrecarga.</p>
+        </div>
+        <div class="step-box">
+          <span class="step-num">4</span>
+          <h4>Plan de Estudio</h4>
+          <p>Genera la agenda diaria de estudio y registra tu feedback.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="dashboard-grid">
+
+      <!-- Column 1: Profile & Subject Selection -->
+      <div class="col-left">
+
+        <!-- 1. Profile Section -->
+        <section class="card">
+          <div class="card-header">
+            <h3>👤 1. Perfil del Estudiante</h3>
+            <span class="badge badge-info">API: /api/v1/profile/</span>
+          </div>
+
+          <form id="profileForm">
+            <div class="form-group">
+              <label for="promedioGeneral">Promedio General Académico (1.0 - 10.0)</label>
+              <input type="number" id="promedioGeneral" min="1.0" max="10.0" step="0.1" value="7.5" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="horasTrabajo">Trabajo Semanal (Horas)</label>
+                <input type="number" id="horasTrabajo" min="0" max="112" step="1" value="20" required>
+              </div>
+              <div class="form-group">
+                <label for="horasSueno">Sueño Diario (Horas)</label>
+                <input type="number" id="horasSueno" min="1" max="24" step="0.5" value="7.5" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btnSaveProfile">
+              💾 Guardar Perfil
+            </button>
+          </form>
+          <div id="profileMsg" class="alert-msg"></div>
+        </section>
+
+        <!-- 2. Subjects Selection -->
+        <section class="card">
+          <div class="card-header">
+            <h3>📚 2. Materias a Cursar</h3>
+            <span class="badge badge-info">API: /api/v1/subjects/</span>
+          </div>
+
+          <div class="presets-bar">
+            <span>Presets de prueba:</span>
+            <button type="button" class="btn-preset" id="btnPresetBalanced">Equilibrado (3 materias)</button>
+            <button type="button" class="btn-preset btn-preset-danger" id="btnPresetOverload">Sobrecarga (7
+              materias)</button>
+          </div>
+
+          <div id="subjectsList" class="subjects-list">
+            <div class="spinner">Cargando materias desde la API...</div>
+          </div>
+
+          <button type="button" class="btn btn-accent btn-large" id="btnSimulate">
+            🚀 Simular Cuatrimestre con LightGBM
+          </button>
+        </section>
+
+      </div>
+
+      <!-- Column 2: Prediction Results & Weekly Schedule -->
+      <div class="col-right">
+
+        <!-- 3. ML Prediction Results -->
+        <section class="card" id="predictionCard">
+          <div class="card-header">
+            <h3>🤖 3. Resultados de Predicción ML</h3>
+            <span class="badge badge-info">API: /api/v1/simulations/predict/</span>
+          </div>
+
+          <div id="predictionPlaceholder" class="placeholder-state">
+            <span class="placeholder-icon">🔮</span>
+            <p>Selecciona materias y haz clic en <strong>"Simular Cuatrimestre con LightGBM"</strong> para ver los
+              resultados de Inteligencia Artificial.</p>
+          </div>
+
+          <div id="predictionResults" class="hidden">
+            <!-- Overload Alert Banner -->
+            <div id="overloadBanner" class="alert-banner hidden">
+              <span class="alert-icon">⚠️</span>
+              <div>
+                <strong id="overloadTitle">ALERTA DE SOBRECARGA HORARIA</strong>
+                <p id="overloadDesc">La suma de cursada, estudio sugerido, trabajo y sueño supera las 168 horas
+                  semanales.</p>
+              </div>
+            </div>
+
+            <!-- Metric Cards Row -->
+            <div class="metrics-row">
+              <div class="metric-box">
+                <span class="metric-label">Nivel de Riesgo</span>
+                <span class="metric-value" id="valNivelRiesgo">-</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Estudio Diario Sugerido</span>
+                <span class="metric-valueHighlight" id="valEstudioDiario">0.0 h/día</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Probabilidad Promedio</span>
+                <span class="metric-value" id="valProbPromedio">0%</span>
+              </div>
+            </div>
+
+            <!-- Weekly Hours Breakdown -->
+            <div class="hours-breakdown">
+              <h4>📊 Desglose de Horas Semanales (Total: 168h)</h4>
+              <div class="progress-bar-container">
+                <div class="bar-segment bar-cursada" id="barCursada" title="Cursada"></div>
+                <div class="bar-segment bar-estudio" id="barEstudio" title="Estudio Sugerido"></div>
+                <div class="bar-segment bar-trabajo" id="barTrabajo" title="Trabajo"></div>
+                <div class="bar-segment bar-sueno" id="barSueno" title="Sueño"></div>
+              </div>
+              <div class="legend-grid" id="hoursLegend"></div>
+            </div>
+
+            <!-- Subject Predictions List -->
+            <div class="predictions-subjects">
+              <h4>🎯 Probabilidad de Promoción por Materia</h4>
+              <div id="subjectPredictionsList" class="subject-predictions-grid"></div>
+            </div>
+
+            <div class="action-footer">
+              <button type="button" class="btn btn-success btn-large" id="btnGeneratePlan">
+                📅 Generar Cronograma Semanal Día a Día
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Study Plan & Feedback -->
+        <section class="card" id="studyPlanCard">
+          <div class="card-header">
+            <h3>📅 4. Cronograma Semanal & Feedback</h3>
+            <span class="badge badge-info">API: /study-plans/generate/ & /feedback/</span>
+          </div>
+
+          <div id="planPlaceholder" class="placeholder-state">
+            <span class="placeholder-icon">🗓️</span>
+            <p>Genera la simulación primero y presiona <strong>"Generar Cronograma Semanal"</strong> para obtener tu
+              plan personalizado.</p>
+          </div>
+
+          <div id="planResults" class="hidden">
+            <div id="planGrid" class="plan-days-grid"></div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>Asistente Facultativo • Backend Django 5 REST + LightGBM Engine • Puerto API: 8080</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

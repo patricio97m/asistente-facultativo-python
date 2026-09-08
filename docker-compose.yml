@@ -1,0 +1,31 @@
+services:
+  web:
+    build: .
+    container_name: asistente_facultativo_backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+      - sqlite_data:/app/data
+      - models_data:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=config.settings
+    restart: unless-stopped
+
+  frontend:
+    image: python:3.11-slim
+    container_name: asistente_facultativo_frontend
+    command: python3 -m http.server 3000 -b 0.0.0.0 --directory /app/frontend
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app/frontend
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
+    driver: local
+  models_data:
+    driver: local
